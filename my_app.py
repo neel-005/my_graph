@@ -3,14 +3,33 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Title
-st.title("Iris Data Graph with Statistics")
+st.title("📊 Iris Data Graph with Statistics")
 
 # Load data
-df = pd.read_csv("Iris.csv", header=None)
-df.columns = ["col1", "col2", "col3", "col4", "col5","col6"]
+try:
+    df = pd.read_csv("iris.csv", header=None)
+except FileNotFoundError:
+    st.error("❌ 'iris.csv' not found. Please make sure it's uploaded to your GitHub repo.")
+    st.stop()
 
-# Select numeric columns
-numeric_df = df[["col1", "col2", "col3", "col4","col5"]]
+# Preview raw data
+st.subheader("🔍 Raw Data Preview")
+st.dataframe(df.head())
+
+# Assign column names based on actual structure
+if df.shape[1] == 6:
+    df.columns = ["col1", "col2", "col3", "col4", "col5", "col6"]
+elif df.shape[1] == 5:
+    df.columns = ["col1", "col2", "col3", "col4", "col5"]
+else:
+    st.error(f"Unexpected number of columns: {df.shape[1]}")
+    st.stop()
+
+# Select numeric columns and ensure clean conversion
+numeric_df = df[["col1", "col2", "col3", "col4"]].apply(pd.to_numeric, errors='coerce')
+
+# Drop rows with missing values (optional)
+numeric_df = numeric_df.dropna()
 
 # Calculate statistics
 mean_vals = numeric_df.mean()
@@ -35,18 +54,18 @@ stats = pd.DataFrame({
 })
 
 # Show statistics table
-st.subheader("Statistics Table")
+st.subheader("📋 Statistics Table")
 st.dataframe(stats)
 
 # --- LINE PLOT of original data ---
-st.subheader("Graph of Data with Average Stats Lines")
+st.subheader("📈 Graph of Data with Average Stats Lines")
 fig, ax = plt.subplots(figsize=(10, 5))
 
 numeric_df.plot(ax=ax)
 
-ax.set_title("Graph of original data with the line of avg stats data")
-ax.set_xlabel("X axis")
-ax.set_ylabel("Y axis")
+ax.set_title("Graph of Original Data with Average Statistic Lines")
+ax.set_xlabel("Sample Index")
+ax.set_ylabel("Measurement Value")
 ax.grid(True, linestyle="--", alpha=0.6)
 
 # Add horizontal lines for average stats
@@ -54,10 +73,8 @@ colors = ["red", "green", "blue", "orange", "purple", "brown", "skyblue", "#303F
 
 for i, stat in enumerate(stats.columns):
     avg_value = stats[stat].mean()
-    ax.axhline(y=avg_value, color=colors[i], linestyle="--", linewidth=1.5,
+    ax.axhline(y=avg_value, color=colors[i % len(colors)], linestyle="--", linewidth=1.5,
                label=f"Avg {stat}")
 
-ax.legend()
-
+ax.legend(loc="upper right")
 st.pyplot(fig)
-
