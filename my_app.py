@@ -7,7 +7,7 @@ st.title("📊 Iris Data Graph with Statistics")
 
 # Load data
 try:
-    df = pd.read_csv("Iris.csv", header=None)
+    df = pd.read_csv("iris.csv", header=None)
 except FileNotFoundError:
     st.error("❌ 'iris.csv' not found. Please make sure it's uploaded to your GitHub repo.")
     st.stop()
@@ -78,5 +78,6 @@ for i, stat in enumerate(stats.columns):
 
 ax.legend(loc="upper right")
 st.pyplot(fig)
+
 
 
