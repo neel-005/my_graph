@@ -6,7 +6,7 @@ import streamlit as st
 st.title("Iris Data Graph with Statistics")
 
 # Load data
-df = pd.read_csv("iris.csv", header=None)
+df = pd.read_csv("Iris.csv", header=None)
 df.columns = ["col1", "col2", "col3", "col4", "col5"]
 
 # Select numeric columns
@@ -58,4 +58,5 @@ for i, stat in enumerate(stats.columns):
                label=f"Avg {stat}")
 
 ax.legend()
+
 st.pyplot(fig)
