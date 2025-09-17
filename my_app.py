@@ -7,10 +7,10 @@ st.title("Iris Data Graph with Statistics")
 
 # Load data
 df = pd.read_csv("Iris.csv", header=None)
-df.columns = ["col1", "col2", "col3", "col4", "col5"]
+df.columns = ["col1", "col2", "col3", "col4", "col5","col6"]
 
 # Select numeric columns
-numeric_df = df[["col1", "col2", "col3", "col4"]]
+numeric_df = df[["col1", "col2", "col3", "col4","col5"]]
 
 # Calculate statistics
 mean_vals = numeric_df.mean()
@@ -60,3 +60,4 @@ for i, stat in enumerate(stats.columns):
 ax.legend()
 
 st.pyplot(fig)
+
