@@ -79,3 +79,4 @@ for i, stat in enumerate(stats.columns):
 ax.legend(loc="upper right")
 st.pyplot(fig)
 
+
